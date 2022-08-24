@@ -1,10 +1,17 @@
 const { Server } = require("socket.io");
 const fs = require("fs/promises");
-const cors = require("cors");
 
 const db = require("./database");
 
-io.use(cors);
+io.use((req, res, next) => {
+  const url = "https://cme-saga-livechat-client.herokuapp.com/";
+  const origin = req.headers.origin;
+
+  if (origin === url) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+  next();
+});
 
 const io = new Server({
   cors: {
