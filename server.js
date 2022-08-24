@@ -20,6 +20,7 @@ function findChat(room) {
   return db.query(sql, [room], (error, rows) => {
     if (error) {
       console.error(error.message);
+      throw error;
     }
     return rows;
   });
@@ -31,6 +32,7 @@ function getChatRooms() {
   return db.query(sql, (error, rows) => {
     if (error) {
       console.error(error.message);
+      throw error;
     }
     return rows;
   });
@@ -42,6 +44,7 @@ function addChat(name) {
   return db.query(sql, [name], (error, rows) => {
     if (error) {
       console.error(error.message);
+      throw error;
     }
     return rows;
   });
@@ -60,6 +63,7 @@ function findUser(username) {
   return db.query(sql, [username], (error, rows) => {
     if (error) {
       console.error(error.message);
+      throw error;
     }
     return rows;
   });
@@ -83,6 +87,7 @@ function getMessages(room) {
   return db.query(sql, [room], (error, rows) => {
     if (error) {
       console.error(error.message);
+      throw error;
     }
     return rows;
   });
