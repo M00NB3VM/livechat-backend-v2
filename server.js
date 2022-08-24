@@ -15,86 +15,59 @@ const io = new Server({
 // CHATS
 
 async function findChat(room) {
-  const sql = `SELECT * FROM chats WHERE name = ?`;
+  const sql = `SELECT * FROM chats WHERE name = $1`;
 
-  const result = await db.query(sql, [room], (error) => {
-    if (error) {
-      console.error(error.message);
-      throw error;
-    }
-    return result.rows;
-  });
+  const result = await db.query(sql, [room]);
+  return result.rows;
 }
 
-function getChatRooms() {
+async function getChatRooms() {
   const sql = `SELECT name FROM chats`;
 
-  return db.query(sql, (error, rows) => {
-    if (error) {
-      console.error(error.message);
-      throw error;
-    }
-    return rows;
-  });
+  const result = await db.query(sql);
+  return result.rows;
 }
 
 function addChat(name) {
-  const sql = `INSERT INTO chats (name) VALUES ($2)`;
-
-  return db.query(sql, [name], (error, rows) => {
-    if (error) {
-      console.error(error.message);
-      throw error;
-    }
-    return rows;
-  });
+  const sql = `INSERT INTO chats (name) VALUES ($1)`;
+  return db.query(sql, [name]);
 }
 
 function removeChat(name) {
-  const sql = `DELETE FROM chats WHERE name = ?`;
+  const sql = `DELETE FROM chats WHERE name = $1`;
   return db.query(sql, [name]);
 }
 
 // USERS
 
-function findUser(username) {
-  const sql = `SELECT * FROM users WHERE username = ?`;
+async function findUser(username) {
+  const sql = `SELECT * FROM users WHERE username = $1`;
 
-  return db.query(sql, [username], (error, rows) => {
-    if (error) {
-      console.error(error.message);
-      throw error;
-    }
-    return rows;
-  });
+  const result = await db.query(sql, [username]);
+  return result.rows;
 }
 
 function addUser(username) {
-  const sql = `INSERT INTO users (username) VALUES (?)`;
+  const sql = `INSERT INTO users (username) VALUES ($1)`;
   db.query(sql, [username]);
 }
 
 function removeUser(username) {
-  const sql = `DELETE FROM users WHERE username = ?`;
+  const sql = `DELETE FROM users WHERE username = $1`;
   db.query(sql, [username]);
 }
 
 // MESSAGES
 
-function getMessages(room) {
-  const sql = `SELECT * FROM messages WHERE room_name is (?) AND receiver = "all" `;
+async function getMessages(room) {
+  const sql = `SELECT * FROM messages WHERE room_name is ($1) AND receiver = "all" `;
 
-  return db.query(sql, [room], (error, rows) => {
-    if (error) {
-      console.error(error.message);
-      throw error;
-    }
-    return rows;
-  });
+  const result = await db.query(sql, [room]);
+  return result.rows;
 }
 
 function addMessage(message) {
-  const sql = `INSERT INTO messages (receiver, message, sender_id, room_name, room_id, date, time) VALUES ($2, $3, $4, $5, $6, $7, $8)`;
+  const sql = `INSERT INTO messages (receiver, message, sender_id, room_name, room_id, date, time) VALUES ($1, $2, $3, $4, $5, $6, $7)`;
   db.query(sql, [
     `${message.to}`,
     `${message.message}`,
@@ -110,7 +83,7 @@ async function deleteMessages(roomName) {
   const room = await findChat(roomName);
   const roomId = room.id;
 
-  const sql = `DELETE FROM messages where room_id = ?`;
+  const sql = `DELETE FROM messages where room_id = $1`;
   db.query(sql, [roomId]);
 }
 
