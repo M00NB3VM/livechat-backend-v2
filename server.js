@@ -5,8 +5,8 @@ const db = require("./database");
 
 const io = new Server({
   cors: {
-    origin: "https://git.heroku.com/cme-saga-livechat-client.git",
-    methods: ["GET", "POST"],
+    origin: "https://cme-saga-livechat-client.herokuapp.com/",
+    methods: ["GET", "POST", "DELETE"],
   },
 });
 
@@ -14,15 +14,15 @@ const io = new Server({
 
 // CHATS
 
-function findChat(room) {
+async function findChat(room) {
   const sql = `SELECT * FROM chats WHERE name = ?`;
 
-  return db.query(sql, [room], (error, rows) => {
+  const result = await db.query(sql, [room], (error) => {
     if (error) {
       console.error(error.message);
       throw error;
     }
-    return rows;
+    return result.rows;
   });
 }
 
