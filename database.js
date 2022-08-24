@@ -37,7 +37,7 @@ db.query(chatStatement, (error) => {
     throw error;
   }
 
-  const insertChatRooms = `INSERT INTO chats (name) VALUES (?)`;
+  const insertChatRooms = `INSERT INTO chats (name) VALUES ($1)`;
   db.query(insertChatRooms, ["Music"]);
   db.query(insertChatRooms, ["Movies"]);
 });
@@ -47,7 +47,7 @@ db.query(userStatement, (error) => {
     console.error(error.message);
     return;
   }
-  const insertUser = `INSERT INTO users (username) VALUES (?)`;
+  const insertUser = `INSERT INTO users (username) VALUES ($1)`;
   db.query(insertUser, ["Admin"]);
 });
 
