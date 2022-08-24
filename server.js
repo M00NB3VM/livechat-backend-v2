@@ -1,7 +1,10 @@
 const { Server } = require("socket.io");
 const fs = require("fs/promises");
+const cors = require("cors");
 
 const db = require("./database");
+
+io.use(cors);
 
 const io = new Server({
   cors: {
