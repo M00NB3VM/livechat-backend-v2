@@ -5,7 +5,7 @@ const db = require("./database");
 
 const io = new Server({
   cors: {
-    origin: "https://cme-saga-livechat-client.herokuapp.com",
+    origin: "https://cme-saga-livechat-client.herokuapp.com/",
     methods: ["GET", "POST", "DELETE"],
   },
 });
