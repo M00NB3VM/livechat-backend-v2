@@ -211,7 +211,6 @@ io.on("connection", (socket) => {
 
   socket.on("get_messages", async (room) => {
     const oldMessages = await getMessages(room);
-    console.log(oldMessages);
     socket.emit("set_messages", oldMessages);
   });
 
@@ -226,6 +225,7 @@ io.on("connection", (socket) => {
     const whisper = message.to;
     const room = message.room;
     const roomNr = await findChat(room);
+    console.log(roomNr);
 
     if (whisper !== "all") {
       const userId = await getOneUser(room, whisper);
