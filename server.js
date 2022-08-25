@@ -225,7 +225,6 @@ io.on("connection", (socket) => {
     const whisper = message.to;
     const room = message.room;
     const roomNr = await findChat(room);
-    console.log(roomNr);
 
     if (whisper !== "all") {
       const userId = await getOneUser(room, whisper);
@@ -235,7 +234,7 @@ io.on("connection", (socket) => {
         message: message.text,
         sender_id: socket.username,
         room_name: room,
-        room_id: roomNr.id,
+        room_id: roomNr[0].id,
         date: message.date,
         time: message.time,
       };
