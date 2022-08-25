@@ -62,7 +62,7 @@ function removeUser(username) {
 // MESSAGES
 
 async function getMessages(room) {
-  const sql = `SELECT * FROM messages WHERE room_name is ($1) AND receiver is ($2)`;
+  const sql = `SELECT * FROM messages WHERE room_name = $1 AND receiver = $2`;
 
   const result = await db.query(sql, [room, "all"]);
   console.log(result);
