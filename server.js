@@ -65,18 +65,18 @@ async function getMessages(room) {
   const sql = `SELECT * FROM messages WHERE room_name = $1 AND receiver = $2`;
 
   const result = await db.query(sql, [room, "all"]);
-  console.log(result);
   return result.rows;
 }
 
 function addMessage(message) {
   const sql = `INSERT INTO messages (receiver, message, sender_id, room_name, room_id, date, time) VALUES ($1, $2, $3, $4, $5, $6, $7)`;
+  const roomId = JSON.parse(message.room_id);
   db.query(sql, [
     `${message.to}`,
     `${message.message}`,
     `${message.sender_id}`,
     `${message.room_name}`,
-    `${message.room_id}`,
+    `${roomId}`,
     `${message.date}`,
     `${message.time}`,
   ]);
