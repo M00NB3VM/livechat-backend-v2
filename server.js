@@ -70,7 +70,7 @@ async function getMessages(room) {
 
 function addMessage(message) {
   const sql = `INSERT INTO messages (receiver, message, sender_id, room_name, room_id, date, time) VALUES ($1, $2, $3, $4, $5, $6, $7)`;
-  console.log(message);
+
   db.query(sql, [
     `${message.to}`,
     `${message.message}`,
