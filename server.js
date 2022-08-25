@@ -262,7 +262,7 @@ io.on("connection", (socket) => {
         message: message.text,
         sender_id: socket.username,
         room_name: room,
-        room_id: roomNr.id,
+        room_id: roomNr[0].id,
         date: message.date,
         time: message.time,
       };
