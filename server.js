@@ -3,6 +3,8 @@ const fs = require("fs/promises");
 
 const db = require("./database");
 
+const PORT = process.env.PORT || "4000";
+
 const io = new Server({
   cors: {
     origin: "https://cme-saga-livechat-client.herokuapp.com",
@@ -26,8 +28,6 @@ async function getChatRooms() {
 
   const result = await db.query(sql);
   return result.rows;
-
-  console.log(result.rows);
 }
 
 function addChat(name) {
@@ -349,4 +349,4 @@ io.on("connection", (socket) => {
   });
 });
 
-io.listen(process.env.PORT);
+io.listen(PORT);
