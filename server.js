@@ -210,7 +210,7 @@ io.on("connection", (socket) => {
 
   socket.on("get_messages", async (room) => {
     const oldMessages = await getMessages(room);
-
+    console.log(oldMessages);
     socket.emit("set_messages", oldMessages);
   });
 
