@@ -196,7 +196,7 @@ io.on("connection", (socket) => {
     const res = await findUser(name);
     console.log(res);
 
-    if (res === undefined) {
+    if (res.length === 0) {
       socket.username = name;
       socket.emit("new_user", socket.username);
 
