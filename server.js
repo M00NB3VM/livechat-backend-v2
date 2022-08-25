@@ -43,7 +43,7 @@ function removeChat(name) {
 // USERS
 
 async function findUser(username) {
-  const sql = `SELECT * FROM users WHERE username = $1`;
+  const sql = `SELECT * FROM users WHERE username = ($1)`;
 
   const result = await db.query(sql, [username]);
   return result.rows;
@@ -55,7 +55,7 @@ function addUser(username) {
 }
 
 function removeUser(username) {
-  const sql = `DELETE FROM users WHERE username = $1`;
+  const sql = `DELETE FROM users WHERE username = ($1)`;
   db.query(sql, [username]);
 }
 
