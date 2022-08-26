@@ -175,7 +175,7 @@ io.on("connection", (socket) => {
         addChat(roomName);
 
         const result = await getChatRooms();
-        socket.emit("set_chats", result);
+        io.emit("set_chats", result);
       } else {
         socket.emit("room_error");
       }
