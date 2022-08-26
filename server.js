@@ -30,14 +30,16 @@ async function getChatRooms() {
   return result.rows;
 }
 
-function addChat(name) {
+async function addChat(name) {
   const sql = `INSERT INTO chats (name) VALUES ($1)`;
-  return db.query(sql, [name]);
+  const result = await db.query(sql, [name]);
+  return result.rows;
 }
 
-function removeChat(name) {
+async function removeChat(name) {
   const sql = `DELETE FROM chats WHERE name = $1`;
-  return db.query(sql, [name]);
+  const result = await db.query(sql, [name]);
+  return result.rows;
 }
 
 // USERS
@@ -49,14 +51,14 @@ async function findUser(username) {
   return result.rows;
 }
 
-function addUser(username) {
+async function addUser(username) {
   const sql = `INSERT INTO users (username) VALUES ($1)`;
-  db.query(sql, [username]);
+  await db.query(sql, [username]);
 }
 
-function removeUser(username) {
+async function removeUser(username) {
   const sql = `DELETE FROM users WHERE username = $1`;
-  db.query(sql, [username]);
+  await db.query(sql, [username]);
 }
 
 // MESSAGES
@@ -68,10 +70,10 @@ async function getMessages(room) {
   return result.rows;
 }
 
-function addMessage(message) {
+async function addMessage(message) {
   const sql = `INSERT INTO messages (receiver, message, sender_id, room_name, room_id, date, time) VALUES ($1, $2, $3, $4, $5, $6, $7)`;
 
-  db.query(sql, [
+  await db.query(sql, [
     `${message.to}`,
     `${message.message}`,
     `${message.sender_id}`,
@@ -87,7 +89,7 @@ async function deleteMessages(roomName) {
   const roomId = room.id;
 
   const sql = `DELETE FROM messages where room_id = $1`;
-  db.query(sql, [roomId]);
+  await db.query(sql, [roomId]);
 }
 
 // GET SOCKETS
@@ -172,7 +174,7 @@ io.on("connection", (socket) => {
       const res = await findChat(roomName);
 
       if (res.length === 0) {
-        addChat(roomName);
+        await addChat(roomName);
 
         const result = await getChatRooms();
         io.emit("set_chats", result);
@@ -200,7 +202,7 @@ io.on("connection", (socket) => {
       socket.username = name;
       socket.emit("new_user", socket.username);
 
-      addUser(socket.username);
+      await addUser(socket.username);
 
       const users = await getAllActiveUsers();
       io.to("default").emit("set_users", users);
@@ -239,7 +241,7 @@ io.on("connection", (socket) => {
         time: message.time,
       };
 
-      addMessage(newMessage);
+      await addMessage(newMessage);
 
       socket.to(userId).emit("PM", {
         to: whisper,
@@ -267,7 +269,7 @@ io.on("connection", (socket) => {
         time: message.time,
       };
 
-      addMessage(newMessage);
+      await addMessage(newMessage);
 
       io.to(room).emit("message", {
         username: socket.username,
@@ -336,7 +338,7 @@ io.on("connection", (socket) => {
     console.log(`${socket.id} disconnected`);
 
     if (socket.username) {
-      removeUser(socket.username);
+      await removeUser(socket.username);
     }
 
     if (socket.currentRoom === "default") {
