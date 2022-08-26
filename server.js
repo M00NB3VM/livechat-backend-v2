@@ -171,7 +171,7 @@ io.on("connection", (socket) => {
       const roomName = room.name;
       const res = await findChat(roomName);
 
-      if (res === undefined) {
+      if (res.length === 0) {
         addChat(roomName);
 
         const result = await getChatRooms();
